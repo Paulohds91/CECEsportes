@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const uri = 'mongodb+srv://paulohds:LUSmJ6axynbvxgmQ@bigdatas.d4ehaca.mongodb.net/castros?retryWrites=true&w=majority&appName=Bigdatas';
+// Use a variável de ambiente MONGODB_URI, ou um valor padrão para desenvolvimento
+const uri = process.env.MONGODB_URI || 'mongodb+srv://paulohds:LUSmJ6axynbvxgmQ@bigdatas.d4ehaca.mongodb.net/castros?retryWrites=true&w=majority&appName=Bigdatas';
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
