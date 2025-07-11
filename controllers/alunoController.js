@@ -3,7 +3,6 @@ const AlunoDetalhes = require('../models/AlunoDetalhes');
 const Plano = require('../models/Plano');
 const Mensalidade = require('../models/Mensalidade');
 const Treino = require('../models/Treino');
-const Checkin = require('../models/Checkin');
 const mercadopago = require('mercadopago');
 const Config = require('../models/Config');
 
@@ -15,19 +14,6 @@ exports.getPlano = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Erro ao buscar plano.' });
   }
-};
-
-exports.checkin = (req, res) => {
-  const userId = req.userId;
-  const dataHora = new Date().toISOString();
-  db.run(
-    'INSERT INTO checkins (aluno_id, data_hora) VALUES (?, ?)',
-    [userId, dataHora],
-    function (err) {
-      if (err) return res.status(500).json({ error: 'Erro ao registrar check-in.' });
-      res.json({ id: this.lastID, dataHora });
-    }
-  );
 };
 
 exports.getTreinos = async (req, res) => {
@@ -72,15 +58,6 @@ exports.sendMessage = (req, res) => {
       res.json({ id: this.lastID, remetente_id, destinatario_id, mensagem, data_hora });
     }
   );
-};
-
-exports.getCheckins = async (req, res) => {
-  try {
-    const checkins = await Checkin.find({ aluno: req.userId });
-    res.json(checkins);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao buscar check-ins.' });
-  }
 };
 
 // Utilitário para inicializar Mercado Pago com o token salvo
@@ -145,7 +122,7 @@ exports.criarAssinaturaMercadoPago = async (req, res) => {
         currency_id: 'BRL'
       },
       payer_email: email,
-      back_url: 'https://www.seusite.com/painel-aluno',
+      back_url: 'https://cecesportes.onrender.com/painel-aluno',
       status: 'pending'
     });
     res.json({ init_point: preapproval.body.init_point, status: preapproval.body.status });
