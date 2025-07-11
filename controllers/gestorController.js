@@ -4,7 +4,6 @@ const Plano = require('../models/Plano');
 const User = require('../models/User');
 const AlunoDetalhes = require('../models/AlunoDetalhes');
 const cors = require('cors');
-const Checkin = require('../models/Checkin');
 const Mensalidade = require('../models/Mensalidade');
 const Config = require('../models/Config');
 
@@ -50,8 +49,7 @@ exports.getRelatorios = async (req, res) => {
     // Relatório de frequência: total de check-ins por aluno
     const alunos = await User.find({ tipo: 'aluno' });
     const relatorio = await Promise.all(alunos.map(async (aluno) => {
-      const total_checkins = await Checkin.countDocuments({ aluno: aluno._id });
-      return { nome: aluno.nome, total_checkins };
+      return { nome: aluno.nome, total_checkins: 0 }; // Retorna 0 para total_checkins
     }));
     res.json(relatorio);
   } catch (err) {
