@@ -4,12 +4,10 @@ const alunoController = require('../controllers/alunoController');
 const auth = require('../middleware/auth');
 
 router.get('/plano', auth, alunoController.getPlano);
-router.post('/checkin', auth, alunoController.checkin);
 router.get('/treinos', auth, alunoController.getTreinos);
 router.get('/mensalidades', auth, alunoController.getMensalidades);
 router.get('/chat', auth, alunoController.getChat);
 router.post('/chat', auth, alunoController.sendMessage);
-router.get('/checkins', auth, alunoController.getCheckins);
 router.post('/pagamento', auth, alunoController.pagarComMercadoPago);
 router.post('/assinatura', auth, alunoController.criarAssinaturaMercadoPago);
 
