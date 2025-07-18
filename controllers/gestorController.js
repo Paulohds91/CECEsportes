@@ -8,9 +8,15 @@ const Mensalidade = require('../models/Mensalidade');
 const Config = require('../models/Config');
 
 exports.cadastrarAluno = async (req, res) => {
-  const { nome, usuario, email, senha, plano_id } = req.body;
+  const {
+    nome, usuario, email, senha, plano_id,
+    data_nascimento, instituicao, serie_turma, periodo_integral, modalidade,
+    mae_nome, mae_cpf, mae_telefone, mae_email,
+    pai_nome, pai_cpf, pai_telefone, pai_email,
+    endereco, cep_cidade, observacoes, ciente_contrato
+  } = req.body;
   if (!nome || !usuario || !email || !senha || !plano_id) {
-    return res.status(400).json({ error: 'Preencha todos os campos.' });
+    return res.status(400).json({ error: 'Preencha todos os campos obrigatórios.' });
   }
   try {
     // Verifica duplicidade
@@ -21,7 +27,27 @@ exports.cadastrarAluno = async (req, res) => {
     const hash = bcrypt.hashSync(senha, 8);
     const user = new User({ nome, usuario, email, senha: hash, tipo: 'aluno' });
     await user.save();
-    const detalhes = new AlunoDetalhes({ usuario: user._id, plano: plano_id });
+    const detalhes = new AlunoDetalhes({
+      usuario: user._id,
+      plano: plano_id,
+      data_nascimento,
+      instituicao,
+      serie_turma,
+      periodo_integral,
+      modalidade,
+      mae_nome,
+      mae_cpf,
+      mae_telefone,
+      mae_email,
+      pai_nome,
+      pai_cpf,
+      pai_telefone,
+      pai_email,
+      endereco,
+      cep_cidade,
+      observacoes,
+      ciente_contrato
+    });
     await detalhes.save();
     res.json({ usuario_id: user._id, nome, email, plano_id });
   } catch (err) {
