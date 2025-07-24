@@ -187,4 +187,22 @@ exports.getMercadoPagoToken = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Erro ao obter Access Token.' });
   }
+};
+
+exports.recuperarSenhaAluno = async (req, res) => {
+  const { cpf, novaSenha } = req.body;
+  if (!cpf || !novaSenha) return res.status(400).json({ error: 'CPF e nova senha são obrigatórios.' });
+  try {
+    const detalhes = await AlunoDetalhes.findOne({ $or: [ { mae_cpf: cpf }, { pai_cpf: cpf } ] });
+    if (!detalhes) {
+      return res.status(404).json({ error: 'Aluno não encontrado para este CPF.' });
+    }
+    const user = await User.findById(detalhes.usuario);
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+    user.senha = bcrypt.hashSync(novaSenha, 8);
+    await user.save();
+    return res.json({ success: true, message: 'Senha redefinida com sucesso!' });
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao redefinir senha.' });
+  }
 }; 
