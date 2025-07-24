@@ -9,7 +9,7 @@ const AlunoDetalhesSchema = new mongoose.Schema({
   instituicao: { type: String },
   serie_turma: { type: String },
   periodo_integral: { type: Boolean, default: false },
-  modalidade: { type: String },
+  modalidade: [{ type: String }], // agora é array
   mae_nome: { type: String },
   mae_cpf: { type: String },
   mae_telefone: { type: String },
