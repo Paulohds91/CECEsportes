@@ -15,5 +15,6 @@ router.put('/plano/:id', auth, gestorController.editarPlano);
 router.delete('/plano/:id', auth, gestorController.excluirPlano);
 router.post('/mercadopago/token', auth, gestorController.setMercadoPagoToken);
 router.get('/mercadopago/token', auth, gestorController.getMercadoPagoToken);
+router.post('/recuperar-senha', gestorController.recuperarSenhaAluno);
 
 module.exports = router; 
